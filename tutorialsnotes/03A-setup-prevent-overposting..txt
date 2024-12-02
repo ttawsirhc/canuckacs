@@ -1,0 +1,221 @@
+
+Prevent over-posting
+
+Currently the sample app exposes the entire TodoItem object. Production apps typically limit the data that's input and returned using a subset of the model. There are multiple reasons behind this, and security is a major one. The subset of a model is usually referred to as a Data Transfer Object (DTO), input model, or view model. DTO is used in this tutorial.
+
+A DTO may be used to:
+
+    Prevent over-posting.
+    Hide properties that clients are not supposed to view.
+    Omit some properties in order to reduce payload size.
+    Flatten object graphs that contain nested objects. Flattened object graphs can be more convenient for clients.
+
+To demonstrate the DTO approach, update the TodoItem class to include a secret field:
+C#
+
+namespace TodoApi.Models
+{
+    public class TodoItem
+    {
+        public long Id { get; set; }
+        public string? Name { get; set; }
+        public bool IsComplete { get; set; }
+        public string? Secret { get; set; }
+    }
+}
+
+The secret field needs to be hidden from this app, but an administrative app could choose to expose it.
+
+Verify you can post and get the secret field.
+
+Create a DTO model:
+C#
+
+namespace TodoApi.Models;
+
+public class TodoItemDTO
+{
+    public long Id { get; set; }
+    public string? Name { get; set; }
+    public bool IsComplete { get; set; }
+}
+
+Update the TodoItemsController to use TodoItemDTO:
+C#
+
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using TodoApi.Models;
+
+namespace TodoApi.Controllers;
+
+[Route("api/[controller]")]
+[ApiController]
+public class TodoItemsController : ControllerBase
+{
+    private readonly TodoContext _context;
+
+    public TodoItemsController(TodoContext context)
+    {
+        _context = context;
+    }
+
+    // GET: api/TodoItems
+    [HttpGet]
+    public async Task<ActionResult<IEnumerable<TodoItemDTO>>> GetTodoItems()
+    {
+        return await _context.TodoItems
+            .Select(x => ItemToDTO(x))
+            .ToListAsync();
+    }
+
+    // GET: api/TodoItems/5
+    // <snippet_GetByID>
+    [HttpGet("{id}")]
+    public async Task<ActionResult<TodoItemDTO>> GetTodoItem(long id)
+    {
+        var todoItem = await _context.TodoItems.FindAsync(id);
+
+        if (todoItem == null)
+        {
+            return NotFound();
+        }
+
+        return ItemToDTO(todoItem);
+    }
+    // </snippet_GetByID>
+
+    // PUT: api/TodoItems/5
+    // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+    // <snippet_Update>
+    [HttpPut("{id}")]
+    public async Task<IActionResult> PutTodoItem(long id, TodoItemDTO todoDTO)
+    {
+        if (id != todoDTO.Id)
+        {
+            return BadRequest();
+        }
+
+        var todoItem = await _context.TodoItems.FindAsync(id);
+        if (todoItem == null)
+        {
+            return NotFound();
+        }
+
+        todoItem.Name = todoDTO.Name;
+        todoItem.IsComplete = todoDTO.IsComplete;
+
+        try
+        {
+            await _context.SaveChangesAsync();
+        }
+        catch (DbUpdateConcurrencyException) when (!TodoItemExists(id))
+        {
+            return NotFound();
+        }
+
+        return NoContent();
+    }
+    // </snippet_Update>
+
+    // POST: api/TodoItems
+    // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+    // <snippet_Create>
+    [HttpPost]
+    public async Task<ActionResult<TodoItemDTO>> PostTodoItem(TodoItemDTO todoDTO)
+    {
+        var todoItem = new TodoItem
+        {
+            IsComplete = todoDTO.IsComplete,
+            Name = todoDTO.Name
+        };
+
+        _context.TodoItems.Add(todoItem);
+        await _context.SaveChangesAsync();
+
+        return CreatedAtAction(
+            nameof(GetTodoItem),
+            new { id = todoItem.Id },
+            ItemToDTO(todoItem));
+    }
+    // </snippet_Create>
+
+    // DELETE: api/TodoItems/5
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> DeleteTodoItem(long id)
+    {
+        var todoItem = await _context.TodoItems.FindAsync(id);
+        if (todoItem == null)
+        {
+            return NotFound();
+        }
+
+        _context.TodoItems.Remove(todoItem);
+        await _context.SaveChangesAsync();
+
+        return NoContent();
+    }
+
+    private bool TodoItemExists(long id)
+    {
+        return _context.TodoItems.Any(e => e.Id == id);
+    }
+
+    private static TodoItemDTO ItemToDTO(TodoItem todoItem) =>
+       new TodoItemDTO
+       {
+           Id = todoItem.Id,
+           Name = todoItem.Name,
+           IsComplete = todoItem.IsComplete
+       };
+}
+
+Verify you can't post or get the secret field.
+Call the web API with JavaScript
+
+See Tutorial: Call an ASP.NET Core web API with JavaScript.
+Web API video series
+
+See Video: Beginner's Series to: Web APIs.
+Reliable web app patterns
+
+See The Reliable Web App Pattern for.NET YouTube videos and article for guidance on creating a modern, reliable, performant, testable, cost-efficient, and scalable ASP.NET Core app, whether from scratch or refactoring an existing app.
+
+Add authentication support to a web API
+
+ASP.NET Core Identity adds user interface (UI) login functionality to ASP.NET Core web apps. To secure web APIs and SPAs, use one of the following:
+
+    Microsoft Entra ID
+    Azure Active Directory B2C (Azure AD B2C)
+    Duende Identity Server
+
+Duende Identity Server is an OpenID Connect and OAuth 2.0 framework for ASP.NET Core. Duende Identity Server enables the following security features:
+
+    Authentication as a Service (AaaS)
+    Single sign-on/off (SSO) over multiple application types
+    Access control for APIs
+    Federation Gateway
+
+Important
+
+Duende Software might require you to pay a license fee for production use of Duende Identity Server. For more information, see Migrate from ASP.NET Core 5.0 to 6.0.
+
+For more information, see the Duende Identity Server documentation (Duende Software website).
+Publish to Azure
+
+For information on deploying to Azure, see Quickstart: Deploy an ASP.NET web app.
+Additional resources
+
+View or download sample code for this tutorial. See how to download.
+
+For more information, see the following resources:
+
+    Create web APIs with ASP.NET Core
+    Tutorial: Create a minimal API with ASP.NET Core
+    ASP.NET Core web API documentation with Swagger / OpenAPI
+    Razor Pages with Entity Framework Core in ASP.NET Core - Tutorial 1 of 8
+    Routing to controller actions in ASP.NET Core
+    Controller action return types in ASP.NET Core web API
+    Deploy ASP.NET Core apps to Azure App Service
+    Host and deploy ASP.NET Core
+    Create a web API with ASP.NET Core

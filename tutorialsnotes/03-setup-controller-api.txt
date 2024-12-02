@@ -1,0 +1,100 @@
+/*
+STEP 3: SCAFFOLD A CONTROLLER
+PRACTICE: (Visual Studio Code) 
+1. Make sure that all of your changes so far are saved.
+2. Control-click the TodoAPI project and select Open in Terminal.
+A. The terminal opens at the TodoAPI project folder. Run the following commands:
+dotnet add package Microsoft.VisualStudio.Web.CodeGeneration.Design
+dotnet add package Microsoft.EntityFrameworkCore.Design
+dotnet add package Microsoft.EntityFrameworkCore.SqlServer
+dotnet add package Microsoft.EntityFrameworkCore.Tools
+dotnet tool uninstall -g dotnet-aspnet-codegenerator (NOTE: if this is the first time run, it will generate an error, since there's nothing to delete!)
+dotnet tool install -g dotnet-aspnet-codegenerator
+dotnet tool update -g dotnet-aspnet-codegenerator
+[dotnet tool uninstall --global dotnet-ef
+dotnet tool install --global dotnet-ef]
+B. The preceding commands:
+I. Add NuGet packages required for scaffolding.
+II. Install the scaffolding engine (dotnet-aspnet-codegenerator) after uninstalling any possible previous version.
+C. For Linux, add the .NET tools directory to the system path with the following command:
+echo 'export PATH=$HOME/.dotnet/tools:$PATH' >> ~/.bashrc
+source ~/.bashrc
+I. NOTE: By default the architecture of the .NET binaries to install represents the currently running OS architecture.
+II. To specify a different OS architecture, see dotnet tool install, --arch option. For more information, see GitHub issue dotnet/AspNetCore.Docs #29262.
+
+BUILD THE PROJECT
+3. Build the project.
+A. Run the following command:
+I. dotnet aspnet-codegenerator controller -name TagController -async -api -m Tag -dc CanuckContext -outDir Controllers --databaseProvider sqlite
+-m 	The name of the model.
+-dc 	The data context.
+--databaseProvider sqlite 	Specify DbContext should use SQLite instead of SQL Server.
+B. The preceding command scaffolds the TagController (SEE COMMENTS IN GENERATED /Controllers/TagController.cs).
+I. The generated code:
+II. Marks the class with the [ApiController] attribute.
+III. This attribute indicates that the controller responds to web API requests.
+IV. For information about specific behaviors that the attribute enables, see Create web APIs with ASP.NET Core.
+V. Uses DI to inject the database context (TagContext) into the controller.
+VI. The database context is used in each of the CRUD methods in the controller.
+C. The ASP.NET Core templates for:
+I. Controllers with views include [action] in the route template.
+II. API controllers don't include [action] in the route template.
+D. When the [action] token isn't in the route template, the action name (method name) isn't included in the endpoint.
+I. That is, the action's associated method name isn't used in the matching route.
+
+MIGRATE THE DATABASE:
+Run the following commands to create and apply migrations:
+dotnet ef migrations add InitialCreate
+dotnet ef database update
+
+UPDATE THE POSTTAG CREATE METHOD
+1. Update the PostTag create method (SEE COMMENTS IN /Controllers/TodItemsController.cs):
+2. Test PostTagItem:
+A. Press Ctrl+F5 to run the app.
+I. In the Swagger browser window, select POST /api/Tags, and then select Try it out.
+II. In the Request body input window, update the JSON. For example,
+{
+  "id": 1,
+  "userId": 1,
+  "tagParentId": 1,
+  "name": "Test Tag"
+}
+III. Select Execute [Swagger POST]
+B. Test the location header URI
+I. In the preceding POST, the Swagger UI shows the location header under Response headers.
+II. For example, location: https://localhost:7260/api/Tags/1.
+III. The location header shows the URI to the created resource.
+C. To test the location header:
+I. In the Swagger browser window, select GET /api/Tags/{id}, and then select Try it out.
+II. Enter 1 in the id input box, and then select Execute. [Swagger GET]
+D. Examine the GET methods
+I. Two GET endpoints are implemented:
+A. GET /api/Tags
+B. GET /api/Tags/{id}
+C. The previous section showed an example of the /api/Tags/{id} route.
+D. Follow the POST instructions (B. above ...) to add another tag ("Test Tag"), and then test the /api/Tags route using Swagger.
+6. This app uses a Sqlite database. If the app is stopped and started, the preceding GET request doesn't return any data.
+A. If no data is returned, POST data to the app.
+
+ROUTING AND URL PATHS
+1. SEE COMMENTS IN /Controllers/TagController.cs regarding routing and POST, PUT, and DELETE methods
+2. Test the PutTag method:
+A. There must be an item in the database before you make a PUT call.
+B. Call GET to ensure there's an item in the database before making a PUT call.
+C. Using the Swagger UI, use the PUT button to update the Tag that has Id = 1 and set its name to "Test Tag Update".
+I. Note the response is HTTP 204 No Content.
+
+TEST THE DELETETODOMETHOD
+1. Use the Swagger UI to delete the Tag that has Id = 1. 
+A. Note the response is HTTP 204 No Content.
+2. Test with other tools; There are many other tools that can be used to test web APIs, for example:
+A. Visual Studio Endpoints Explorer and .http files
+B. http-repl
+C. curl. Swagger uses curl and shows the curl commands it submits.
+D. Fiddler
+E. For more information, see:
+I. Minimal API tutorial: test with .http files and Endpoints Explorer
+II. Install and test APIs with http-repl
+
+THEORY:
+*/

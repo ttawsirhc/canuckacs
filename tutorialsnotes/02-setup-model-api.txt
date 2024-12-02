@@ -1,0 +1,24 @@
+/*
+STEP 2: ADD A MODEL CLASS 
+PRACTICE:
+1. Add a folder named Models. Create a folder called Models and add a class file, e.g., Tag.cs:
+2. Add a Tag.cs file to the Models folder with the following code: (SEE COMMENTS IN COPIED CODE)
+3. Model classes can go anywhere in the project, but the Models folder is used by convention.
+
+ADD A DATABASE CONTEXT
+1. The database context is the main class that coordinates Entity Framework functionality for a data model.
+A. This class is created by deriving from the Microsoft.EntityFrameworkCore.DbContext class.
+2. (Visual Studio Code:) Add a TagContext.cs file to the Models folder, and Enter the following code:
+A. SEE COPIED CODE AND COMMENTS IN /Models/TagContext.cs
+
+REGISTER THE DATABASE CONTEXT:
+1. In ASP.NET Core, services such as the DB context must be registered with the dependency injection (DI) container.
+2. The container provides the service to controllers.
+3. Update Program.cs with the following highlighted code: (SEE COPIED CODE AND COMMENTS IN /Program.cs)
+
+PROCEED TO STEP 3: SCAFFOLDING A CONTROLLER ...
+
+THEORY:
+A model is a set of classes that represent the data that the app manages.
+The model for this app is the TodoItem class. (Visual Studio Code)
+*/

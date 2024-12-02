@@ -1,0 +1,121 @@
+/*
+NOTE: REMEMBER TO ADD standalone: true TO THE @Component PORTION TO AVOID AN IMPORT ERROR
+
+CREATE HOME COMPONENT
+THEORY/SUMMARY:
+Summary: In this lesson, you created a new component for your app and gave it a filter edit control and button.
+This tutorial lesson demonstrates how to create a new component for your Angular app.
+What you'll learn:
+Your app has a new component: HomeComponent
+Conceptual preview of Angular components
+Angular apps are built around components, which are Angular's building blocks.
+Components contain the code, HTML layout, and CSS style information that provide the function and appearance of an element in the app.
+In Angular, components can contain other components.
+An app's functions and appearance can be divided and partitioned into components.
+In Angular, components have metadata that define its properties.
+When you create your HomeComponent, you use these properties:
+selector: to describe how Angular refers to the component in templates.
+standalone: to describe whether the component requires a NgModule.
+imports: to describe the component's dependencies.
+template: to describe the component's HTML markup and layout.
+styleUrls: to list the URLs of the CSS files that the component uses in an array.
+
+PRACTICE:
+1. Learn more about Components; Create the HomeComponent
+A. In this step, you create a new component for your app.
+B. In the Terminal pane of your IDE: In your project directory, navigate to the [first-app]/root directory.
+C. Run this command to create a new HomeComponent ng generate component home [--skip-import]
+I. Run this command to build and serve your app: ng serve
+II. Note: This step is only for your local environment!:
+III. Open a browser and navigate to http://localhost:4200 to find the application.
+IV. Confirm that the app builds without error.
+V. HELPFUL: It should render the same as it did in the previous lesson
+VI. ... because even though you added a new component, you haven't included it in any of the app's templates, yet.
+VII. Leave ng serve running as you complete the next steps.
+2. Add the new component to your app's layout
+A. In this step, you add the new component, HomeComponent to your app's root component,
+B.  ... AppComponent, so that it displays in your app's layout.
+C. In the Edit pane of your IDE:
+I. Open app.component.ts in the editor.
+II. In app.component.ts, import HomeComponent by adding this line to the file level imports:
+III. Import HomeComponent in src/app/app.component.ts: import {HomeComponent} from './home/home.component';
+C. In app.component.ts, in @Component, update the imports array property and add HomeComponent.
+I. Replace in src/app/app.component.ts: imports: [HomeComponent], (also remember standalone: true)
+D. In app.component.ts, in @Component, update the template property to include the following HTML code:
+I. Replace in src/app/app.component.ts:
+template: `
+<main>
+<header class="brand-name">
+<img class="brand-logo" src="/assets/logo.svg" alt="logo" aria-hidden="true" />
+</header>
+<section class="content">
+<app-home>
+</app-home>
+</section></main>
+`,
+IV. Save your changes to app.component.ts.
+V. If ng serve is running, the app should update.
+VI. If ng serve is not running, start it again.
+VII. Hello world in your app should change to home works! from the HomeComponent.
+VIII. Check the running app in the browser and confirm that the app has been updated.
+[browser frame of page displaying the text 'home works!']
+ADD FEATURES TO YOUR HOMECOMPONENT
+1. In this step you add features to HomeComponent.
+2. In the previous step, you added the default HomeComponent to your app's template so its default HTML appeared in the app.
+3. In this step, you add a search filter and button that is used in a later lesson. For now, that's all that HomeComponent has.
+A. Note that, this step just adds the search elements to the layout without any functionality, yet.
+B. In the Edit pane of your IDE: In the first-app directory, open home.component.ts in the editor.
+C. In home.component.ts, in @Component, update the template property with this code.
+D. Replace in src/app/home/home.component.ts
+template: `
+<section>
+<form>
+<input type="text" placeholder="Filter by city" />
+<button class="primary" type="button">Search</button>
+</form>
+</section>
+`,
+4. Next, open home.component.css in the editor and update the content with these styles.
+A. Note: In the browser, these can go in src/app/home/home.component.ts in the styles array.
+B. Replace in src/app/home/home.component.css
+.results {
+    display: grid;
+    column-gap: 14px;
+    row-gap: 14px;
+    grid-template-columns: repeat(auto-fill, minmax(400px, 400px));
+    margin-top: 50px;
+    justify-content: space-around;
+}
+input[type="text"] {
+    border: solid 1px var(--primary-color);
+    padding: 10px;
+    border-radius: 8px;
+    margin-right: 4px;
+    display: inline-block;
+    width: 30%;
+}
+button {
+    padding: 10px;
+    border: solid 1px var(--primary-color);
+    background: var(--primary-color);
+    color: white;
+    border-radius: 8px;
+}
+@media (min-width: 500px) and (max-width: 768px) {
+    .results {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    input[type="text"] {
+        width: 70%;
+    }
+}
+@media (max-width: 499px) {
+    .results {
+        grid-template-columns: 1fr;
+    }
+}
+C. Confirm that the app builds without error.
+D. You should find the filter query box and button in your app and they should be styled.
+E. Correct any errors before you continue to the next step.
+[browser frame of homes-app displaying logo, filter text input box and search button]
+*/

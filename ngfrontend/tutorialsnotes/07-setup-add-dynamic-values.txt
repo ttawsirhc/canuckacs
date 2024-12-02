@@ -1,0 +1,46 @@
+ADD DYNMAIC VALUES TO TEMPLATES
+ADD AN INTERPOLATION TO A COMPONENT'S TEMPLATE
+THEORY/SUMMARY:
+Summary: In this lesson, you added a new HTML structure and used Angular template syntax
+to render values in the HousingLocation template.
+Now, you have two important skills:
+-passing data to components
+-Interpolating values into a template
+With these skills, your app can now share data and display dynamic values in the browser. Great work so far.
+
+This tutorial lesson demonstrates how to add interpolation to Angular templates in order to display dynamic data in a template.
+What you'll learn
+-Your app will display interpolated values in the HousingLocationComponent template.
+-Your app will render a housing location data to the browser.
+
+CONCEPTUAL PREVIEW OF INTERPOLATION
+1. In this step you will display values (properties and Input values) in a template using interpolation.
+2. Using the {{ expression }} in Angular templates, you can render values from properties,
+A. ... Inputs and valid JavaScript expressions.
+B. For a more in depth explanation, please refer to the Displaying values with interpolation guide.
+3. Update HousingLocationComponent template to include interpolated values
+A. This step adds new HTML structure and interpolated values in the HousingLocationComponent template.
+B. In the code editor: Navigate to src/app/housing-location/housing-location.component.ts
+C. In the template property of the @Component decorator, replace the existing HTML markup with the following code:
+D. Update HousingLocationComponent template:
+template: `
+    <section class="listing">
+        <img class="listing-photo" 
+            [src]="housingLocation.photo" 
+            alt="Exterior photo of {{ housingLocation.name }}"
+            crossorigin
+        />
+        <h2 class="listing-heading">{{ housingLocation.name }}</h2>
+        <p class="listing-location">{{ housingLocation.city }}, {{ housingLocation.state }}</p>
+    </section>
+`,
+E. In this updated template code you have used property binding to bind the `housingLocation.photo` to the `src` attribute.
+F. The `alt` attribute uses interpolation to give more context to the alt text of the image.
+G. You use interpolation to include the values for `name`, `city` and `state` of the `housingLocation` property.
+4. Confirm the changes render in the browser
+5. Save all changes.
+6. Open the browser and confirm that the app renders the photo, city and state sample data.browser
+A. ... frame of homes-app displaying logo, filter text input box, search button and the same housing location UI card
+7. For more information about the topics covered in this lesson, visit:
+A. Template syntax
+B. Displaying values with interpolation

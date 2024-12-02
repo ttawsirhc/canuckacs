@@ -1,0 +1,48 @@
+
+USE *NGFOR TO LIST OBJECTS IN COMPONENT
+THEORY/SUMMARY:
+Summary: In this lesson, you used the ngFor directive to repeat data dynamically in Angular templates.
+You also added a new array of data to be used in the Angular app.
+The application now dynamically renders a list of housing locations in the browser.
+This tutorial lesson demonstrates how to use ngFor directive in Angular templates
+in order to display dynamically repeated data in a template.
+
+What you'll learn
+-You will have added a data set to the app
+-Your app will display a list of elements from the new data set using ngFor
+
+CONCEPTUAL PREVIEW OF NGFOR
+In Angular, ngFor is a specific type of directive used to dynamically repeat data in a template.
+In plain JavaScript you would use a for loop - ngFor provides similar functionality for Angular templates.
+You can utilize ngFor to iterate over arrays and even asynchronous values.
+In this lesson, you'll add a new array of data to iterate over.
+For a more in depth explanation, please refer to the Built-in directives guide.
+
+PRACTICE:
+ADD HOUSING DATA TO THE HOMECOMPONENT
+1. In the HomeComponent there is only a single housing location.
+2. In this step, you will add an array of HousingLocation entries.
+A. In src/app/home/home.component.ts, remove the housingLocation property from the HomeComponent class.
+B. Update the HomeComponent class to have a property called housingLocationList.
+C. Update your code to match the following code: Add housingLocationList property
+D. IMPORTANT: Do not remove the @Component decorator, you will update that code in an upcoming step.
+UPDATE THE HOMECOMPONENT TEMPLATE TO USE NGFOR
+2. Now the app has a dataset that you can use to display the entries in the browser using the ngFor directive.
+A. Update the <app-housing-location> tag in the template code to this: Add ngFor to HomeComponent template
+<section class="results">
+<app-housing-location
+    *ngFor="let housingLocation of housingLocationList"
+    [housingLocation]="housingLocation"
+></app-housing-location>
+</section>
+B. NOTE: in the code [housingLocation] = "housingLocation"
+C. the housingLocation value now refers to the variable used in the ngFor directive.
+D. Before this change, it referred to the property on the HomeComponent class.
+3. Save all changes.
+4. Refresh the browser and confirm that the app now renders a grid of housing locations.
+[browser frame of homes-app displaying logo, filter text input box, search button and a grid of housing location cards]
+5. The app is taking shape, great job.
+6. For more information about the topics covered in this lesson, visit:
+A. Structural Directives
+B. ngFor guide
+C. ngFor

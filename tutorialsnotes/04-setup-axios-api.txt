@@ -1,0 +1,182 @@
+HOW TO USE AXIOS WITHIN ANGULAR TO RUN CRUD QUERIES ON A .NET MVC (C#) BACKEND
+THEORY:
+Using Axios in an Angular application to run CRUD queries against a .NET MVC backend involves the following steps:
+
+PRACTICE:
+1. Set Up Axios in Your Angular Project
+A. Install Axios in your Angular project:
+B. npm install axios
+C. Optionally, install @types/axios for TypeScript support:
+I. npm install --save-dev @types/axios
+2. Import Axios
+A. Axios can be used directly in your components or Angular services.
+B. Typically, you’ll use a service for managing API calls.
+3. Create an Angular Service
+A. It’s best practice to encapsulate HTTP requests within an Angular service.
+B. Here's how you can create a service that uses Axios.
+Example: api.service.ts
+
+import { Injectable } from '@angular/core';
+import axios, { AxiosInstance } from 'axios';
+
+@Injectable({
+  providedIn: 'root',
+})
+export class ApiService {
+  private axiosClient: AxiosInstance;
+
+  constructor() {
+    // Initialize Axios instance
+    this.axiosClient = axios.create({
+      baseURL: 'https://your-dotnet-api-url.com/api', // Your .NET MVC API base URL
+      timeout: 10000, // Set a timeout (optional)
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+  }
+
+  // CRUD Methods
+  async get<T>(endpoint: string): Promise<T> {
+    const response = await this.axiosClient.get<T>(endpoint);
+    return response.data;
+  }
+
+  async post<T>(endpoint: string, payload: any): Promise<T> {
+    const response = await this.axiosClient.post<T>(endpoint, payload);
+    return response.data;
+  }
+
+  async put<T>(endpoint: string, payload: any): Promise<T> {
+    const response = await this.axiosClient.put<T>(endpoint, payload);
+    return response.data;
+  }
+
+  async delete<T>(endpoint: string): Promise<T> {
+    const response = await this.axiosClient.delete<T>(endpoint);
+    return response.data;
+  }
+}
+4. Use the Service in Your Angular Component
+A. Inject the ApiService into your component to call your backend API.
+B. Example: app.component.ts
+import { Component, OnInit } from '@angular/core';
+import { ApiService } from './api.service';
+
+@Component({
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.css'],
+})
+export class AppComponent implements OnInit {
+  data: any;
+  newItem = { name: 'Example Item' };
+
+  constructor(private apiService: ApiService) {}
+
+  ngOnInit(): void {
+    this.loadData();
+  }
+
+  async loadData() {
+    try {
+      this.data = await this.apiService.get('/items'); // GET: Fetch data from "/items"
+      console.log('Data fetched:', this.data);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  }
+
+  async addItem() {
+    try {
+      const result = await this.apiService.post('/items', this.newItem); // POST: Add new item
+      console.log('Item added:', result);
+    } catch (error) {
+      console.error('Error adding item:', error);
+    }
+  }
+
+  async updateItem(id: number) {
+    try {
+      const result = await this.apiService.put(`/items/${id}`, { name: 'Updated Item' }); // PUT: Update item
+      console.log('Item updated:', result);
+    } catch (error) {
+      console.error('Error updating item:', error);
+    }
+  }
+
+  async deleteItem(id: number) {
+    try {
+      const result = await this.apiService.delete(`/items/${id}`); // DELETE: Remove item
+      console.log('Item deleted:', result);
+    } catch (error) {
+      console.error('Error deleting item:', error);
+    }
+  }
+}
+
+5. Backend Setup: .NET MVC API
+A. Ensure your backend has endpoints for CRUD operations. Here’s a sample for a .NET MVC API controller.
+B. Example: ItemsController.cs
+
+using System.Collections.Generic;
+using System.Web.Http;
+
+namespace YourApp.Controllers
+{
+    [RoutePrefix("api/items")]
+    public class ItemsController : ApiController
+    {
+        private static List<Item> items = new List<Item>
+        {
+            new Item { Id = 1, Name = "Item 1" },
+            new Item { Id = 2, Name = "Item 2" }
+        };
+
+        [HttpGet, Route("")]
+        public IHttpActionResult GetItems()
+        {
+            return Ok(items);
+        }
+
+        [HttpPost, Route("")]
+        public IHttpActionResult AddItem(Item item)
+        {
+            item.Id = items.Count + 1;
+            items.Add(item);
+            return Ok(item);
+        }
+
+        [HttpPut, Route("{id:int}")]
+        public IHttpActionResult UpdateItem(int id, Item item)
+        {
+            var existingItem = items.Find(i => i.Id == id);
+            if (existingItem == null) return NotFound();
+            existingItem.Name = item.Name;
+            return Ok(existingItem);
+        }
+
+        [HttpDelete, Route("{id:int}")]
+        public IHttpActionResult DeleteItem(int id)
+        {
+            var item = items.Find(i => i.Id == id);
+            if (item == null) return NotFound();
+            items.Remove(item);
+            return Ok();
+        }
+    }
+
+    public class Item
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+    }
+}
+6. Test the Integration
+A. Start the backend server (e.g., using IIS Express or Kestrel).
+B. Run your Angular application and test the API calls.
+C. Notes
+I. CORS: Ensure your .NET backend allows requests from the Angular app's origin by configuring CORS in the WebApiConfig or middleware.
+II. Error Handling: Add robust error handling in your Axios service to deal with API errors.
+III. Environment Variables: Use Angular’s environment files to manage the base URL for development and production.
+D. ^^ This approach keeps the code clean, modular, and maintainable.

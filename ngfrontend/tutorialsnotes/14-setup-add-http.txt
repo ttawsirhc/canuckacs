@@ -1,0 +1,185 @@
+
+ADD HTTP COMMUNICATION TO YOUR APP
+THEORY/SUMMARY:
+Summary: In this lesson, you updated your app to use a local web server (json-server),
+and use asynchronous service methods to retrieve data.
+
+This tutorial demonstrates how to integrate HTTP and an API into your app.
+Up until this point your app has read data from a static array in an Angular service.
+The next step is to use a JSON server that your app will communicate with over HTTP.
+The HTTP request will simulate the experience of working with data from a server.
+IMPORTANT: We recommend using your local environment for this step of the tutorial.
+What you'll learn:
+-Your app will use data from a JSON server
+-Configure the JSON server
+JSON Server is an open source tool used to create mock REST APIs.
+You'll use it to serve the housing location data that is currently stored in the housing service.
+
+PRACTICE:
+1. Install json-server from npm by using the following command.
+A. npm install -g json-server
+2. In the root directory of your project, create a file called db.json.
+A. This is where you will store the data for the json-server.
+3. Open db.json and copy the following code into the file
+{
+    "locations": [
+        {
+            "id": 0,
+            "name": "Acme Fresh Start Housing",
+            "city": "Chicago",
+            "state": "IL",
+            "photo": "https://angular.dev/assets/images/tutorials/common/bernard-hermant-CLKGGwIBTaY-unsplash.jpg",
+            "availableUnits": 4,
+            "wifi": true,
+            "laundry": true
+        },
+        {
+            "id": 1,
+            "name": "A113 Transitional Housing",
+            "city": "Santa Monica",
+            "state": "CA",
+            "photo": "https://angular.dev/assets/images/tutorials/common/brandon-griggs-wR11KBaB86U-unsplash.jpg",
+            "availableUnits": 0,
+            "wifi": false,
+            "laundry": true
+        },
+        {
+            "id": 2,
+            "name": "Warm Beds Housing Support",
+            "city": "Juneau",
+            "state": "AK",
+            "photo": "https://angular.dev/assets/images/tutorials/common/i-do-nothing-but-love-lAyXdl1-Wmc-unsplash.jpg",
+            "availableUnits": 1,
+            "wifi": false,
+            "laundry": false
+        },
+        {
+            "id": 3,
+            "name": "Homesteady Housing",
+            "city": "Chicago",
+            "state": "IL",
+            "photo": "https://angular.dev/assets/images/tutorials/common/ian-macdonald-W8z6aiwfi1E-unsplash.jpg",
+            "availableUnits": 1,
+            "wifi": true,
+            "laundry": false
+        },
+        {
+            "id": 4,
+            "name": "Happy Homes Group",
+            "city": "Gary",
+            "state": "IN",
+            "photo": "https://angular.dev/assets/images/tutorials/common/krzysztof-hepner-978RAXoXnH4-unsplash.jpg",
+            "availableUnits": 1,
+            "wifi": true,
+            "laundry": false
+        },
+        {
+            "id": 5,
+            "name": "Hopeful Apartment Group",
+            "city": "Oakland",
+            "state": "CA",
+            "photo": "https://angular.dev/assets/images/tutorials/common/r-architecture-JvQ0Q5IkeMM-unsplash.jpg",
+            "availableUnits": 2,
+            "wifi": true,
+            "laundry": true
+        },
+        {
+            "id": 6,
+            "name": "Seriously Safe Towns",
+            "city": "Oakland",
+            "state": "CA",
+            "photo": "https://angular.dev/assets/images/tutorials/common/phil-hearing-IYfp2Ixe9nM-unsplash.jpg",
+            "availableUnits": 5,
+            "wifi": true,
+            "laundry": true
+        },
+        {
+            "id": 7,
+            "name": "Hopeful Housing Solutions",
+            "city": "Oakland",
+            "state": "CA",
+            "photo": "https://angular.dev/assets/images/tutorials/common/r-architecture-GGupkreKwxA-unsplash.jpg",
+            "availableUnits": 2,
+            "wifi": true,
+            "laundry": true
+        },
+        {
+            "id": 8,
+            "name": "Seriously Safe Towns",
+            "city": "Oakland",
+            "state": "CA",
+            "photo": "https://angular.dev/assets/images/tutorials/common/saru-robert-9rP3mxf8qWI-unsplash.jpg",
+            "availableUnits": 10,
+            "wifi": false,
+            "laundry": false
+        },
+        {
+            "id": 9,
+            "name": "Capital Safe Towns",
+            "city": "Portland",
+            "state": "OR",
+            "photo": "https://angular.dev/assets/images/tutorials/common/webaliser-_TPTXZd9mOo-unsplash.jpg",
+            "availableUnits": 6,
+            "wifi": true,
+            "laundry": true
+        }
+    ]
+}
+A. Save this file.
+4. Time to test your configuration.
+A. From the command line, at the root of your project run the following commands.
+B. json-server --watch db.json
+5. In your web browser, navigate to the http://localhost:3000/locations and confirm that the response includes the data stored in db.json.
+A. If you have any trouble with your configuration, you can find more details in the official documentation.
+6. Update service to use web server instead of local array
+A. The data source has been configured, the next step is to update your web app to connect to it use the data.
+B. In src/app/housing.service.ts, make the following changes:
+C. Update the code to remove housingLocationList property and the array containing the data.
+D. Add a string property called url and set its value to 'http://localhost:3000/locations'
+E. url = 'http://localhost:3000/locations';
+F. This code will result in errors in the rest of the file because it depends on the housingLocationList property.
+6. We're going to update the service methods next.
+A. Update the getAllHousingLocations function to make a call to the web server you configured.
+B. adev/src/content/tutorials/first-app/steps/14-http/src-final/app/housing.service.ts
+async getAllHousingLocations(): Promise<HousingLocation[]> {
+    const data = await fetch(this.url);
+    return (await data.json()) ?? [];
+}
+C. The code now uses asynchronous code to make a GET request over HTTP.
+D. HELPFUL: For this example, the code uses fetch.
+E. For more advanced use cases consider using HttpClient provided by Angular.
+7. Update the getHousingLocationsById function to make a call to the web server you configured.
+A. adev/src/content/tutorials/first-app/steps/14-http/src-final/app/housing.service.ts
+async getHousingLocationById(id: number): Promise<HousingLocation | undefined> {
+    const data = await fetch(`${this.url}/${id}`);
+    return (await data.json()) ?? {};
+}
+8. Once all the updates are complete, your updated service should match the following code.
+9. Final version of housing.service.ts
+10. Update the components to use asynchronous calls to the housing service
+A. The server is now reading data from the HTTP request but the components that rely on the service now have errors
+B. ... because they were programmed to use the synchronous version of the service.
+C. In src/app/home/home.component.ts, update the constructor to use the new asynchronous version of the getAllHousingLocations method.
+D. adev/src/content/tutorials/first-app/steps/14-http/src-final/app/home/home.component.ts
+constructor() {
+    this.housingService.getAllHousingLocations().then((housingLocationList: HousingLocation[]) => {
+        this.housingLocationList = housingLocationList;
+        this.filteredLocationList = housingLocationList;
+    });
+}
+11. In src/app/details/details.component.ts, update the constructor to use the new 
+A. ... asynchronous version of the getHousingLocationById method.
+B. adev/src/content/tutorials/first-app/steps/14-http/src-final/app/details/details.component.ts
+constructor() {
+    const housingLocationId = parseInt(this.route.snapshot.params['id'], 10);
+    this.housingService.getHousingLocationById(housingLocationId).then((housingLocation) => {
+        this.housingLocation = housingLocation;
+});
+}
+12. Save your code.
+13. Open the application in the browser and confirm that it runs without any errors.
+14. Note: This lesson relies on the fetch browser API.
+A. For the support of interceptors, please refer to the Http Client documentation
+15. Congratulations! You've successfully completed this tutorial and are ready to continue your journey
+A. ... with building even more complex Angular Apps.
+16. If you would like to learn more, please consider completing some of Angular's other developer tutorials and guides.

@@ -1,0 +1,83 @@
+
+ADD ROUTES TO THE APPLICATION
+THEORY/SUMMARY:
+Summary: In this lesson, you enabled routing in your app as well as defined new routes.
+Now your app can support navigation between views.
+In the next lesson, you will learn to navigate to the "details" page for a given housing location.
+
+This tutorial lesson demonstrates how to add routes to your app.
+IMPORTANT: We recommend using your local environment to learn routing.
+What you'll learn:
+-At the end of this lesson your application will have support for routing.
+
+Conceptual preview of routing
+This tutorial introduces routing in Angular.
+Routing is the ability to navigate from one component in the application to another.
+In Single Page Applications (SPA), only parts of the page are updated to represent the requested view for the user.
+The Angular Router enables users to declare routes and specify which component
+should be displayed on the screen if that route is requested by the application.
+In this lesson, you will enable routing in your application to navigate to the details page.
+
+PRACTICE:
+1. Create a default details component
+2. From the terminal, enter the following command to create the DetailsComponent:
+A. ng generate component details --skip-import
+3. This component will represent the details page that provides more information on a given housing location.
+ADD ROUTING TO THE APPLICATION
+4. In the src/app directory, create a file called routes.ts.
+A. This file is where we will define the routes in the application.
+5. In main.ts, make the following updates to enable routing in the application:
+6. Import the routes file and the provideRouter function:
+A. Import routing details in src/main.ts
+B. import {provideRouter} from '@angular/router';import routeConfig from './app/routes';
+5. Update the call to bootstrapApplication to include the routing configuration:
+6. Add router configuration in src/main.ts
+bootstrapApplication(AppComponent, {
+  providers: [provideProtractorTestingSupport(), provideRouter(routeConfig)],
+}).catch((err) => console.error(err));
+7. In src/app/app.component.ts, update the component to use routing:
+A. Add a file level import for RoutingModule:
+B. Import RouterModule in src/app/app.component.ts
+C. import {RouterModule} from '@angular/router';
+8. Add RouterModule to the @Component metadata imports
+A. Import RouterModule in src/app/app.component.ts
+B. imports: [HomeComponent, RouterModule],
+9. In the template property, replace the <app-home></app-home> tag with the <router-outlet> directive
+A. ... and add a link back to the home page. Your code should match this code:
+B. Add router-outlet in src/app/app.component.ts
+<section class="content">
+    <router-outlet></router-outlet>
+</section>
+10. Add route to new component
+A. In the previous step you removed the reference to the <app-home> component in the template.
+B. In this step, you will add a new route to that component.
+C. In routes.ts, perform the following updates to create a route.
+D. Add a file level imports for the HomeComponent, DetailsComponent and the Routes type that you'll use in the route definitions.
+E. Import components and Routes:
+import {Routes} from '@angular/router';
+import {HomeComponent} from './home/home.component';
+import {DetailsComponent} from './details/details.component';
+11. Define a variable called routeConfig of type Routes and define two routes for the app:
+A. Add routes to the app:
+const routeConfig: Routes = [
+    {
+      path: '',
+      component: HomeComponent,
+      title: 'Home page',
+    },
+    {
+      path: 'details/:id',
+      component: DetailsComponent,
+      title: 'Home details',
+    },
+  ];
+  export default routeConfig;
+B. The entries in the routeConfig array represent the routes in the application.
+C. The first entry navigates to the HomeComponent whenever the url matches ''.
+D. The second entry uses some special formatting that will be revisited in a future lesson.
+E. Save all changes and confirm that the application works in the browser. 
+F. The application should still display the list of housing locations.
+12. You are making great progress with your app, well done.
+13. For more information about the topics covered in this lesson, visit:
+A. Routing in Angular Overview
+B. Common Routing Tasks

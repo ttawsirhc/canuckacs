@@ -1,0 +1,54 @@
+NOTE: THIS IS COVERED IN STEP 03-setup-controller-api.txt!
+THESE NOTES ARE FROM CHATGPT, AND OFFER AN ALTERNATIVE TO THE TYPICAL SETUP
+Step 4: Create the Database Context
+
+    Create a Data folder and add AppDbContext.cs:
+
+    using Microsoft.EntityFrameworkCore;
+    using AspNetCoreSQLiteApi.Models;
+
+    namespace AspNetCoreSQLiteApi.Data
+    {
+        public class AppDbContext : DbContext
+        {
+            public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
+
+            public DbSet<TodoItem> TodoItems { get; set; }
+        }
+    }
+
+Step 5: Configure SQLite in Program.cs
+
+    Open Program.cs and configure the database:
+
+    using AspNetCoreSQLiteApi.Data;
+    using Microsoft.EntityFrameworkCore;
+
+    var builder = WebApplication.CreateBuilder(args);
+
+// Add services to the container. builder.Services.AddControllers(); builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection"))); builder.Services.AddEndpointsApiExplorer(); builder.Services.AddSwaggerGen();
+
+var app = builder.Build();
+
+// Configure the HTTP request pipeline. if (app.Environment.IsDevelopment()) { app.UseSwagger(); app.UseSwaggerUI(); }
+
+app.UseHttpsRedirection(); app.UseAuthorization(); app.MapControllers();
+
+app.Run();
+
+
+2. Add a connection string to `appsettings.json`:
+```json
+{
+    "ConnectionStrings": {
+        "DefaultConnection": "Data Source=app.db"
+    },
+    "Logging": {
+        "LogLevel": {
+            "Default": "Information",
+            "Microsoft.AspNetCore": "Warning"
+        }
+    },
+    "AllowedHosts": "*"
+}
+

@@ -1,0 +1,80 @@
+
+CREATING AN INTERFACE
+THEORY/SUMMARY:
+Summary: In this lesson, you created an interface that created a new data type for your app.
+This new data type makes it possible for you to specify where HousingLocation data is required.
+This new data type also makes it possible for your IDE and the TypeScript compiler can ensure
+that HousingLocation data is used where it's required.
+
+This tutorial lesson demonstrates how to create an interface and include it in a component of your app.
+WHAT YOU'LL LEARN:
+-Your app has a new interface that it can use as a data type.
+-Your app has an instance of the new interface with sample data.
+
+CONCEPTUAL PREVIEW OF INTERFACES
+Interfaces are custom data types for your app.
+Angular uses TypeScript to take advantage of working in a strongly typed programming environment.
+Strong type checking reduces the likelihood of one element in your app sending incorrectly formatted data to another.
+Such type-mismatch errors are caught by the TypeScript compiler and many such errors can also be caught in your IDE.
+
+PRACTICE:
+1. In this lesson, you'll create an interface to define properties that represent data about a single housing location.
+CREATE A NEW ANGULAR INTERFACE
+2. This step creates a new interface in your app.
+3. In the Terminal pane of your IDE:
+A. In your project directory, navigate to the first-app directory (codelabs-homes-app-start).
+B. In the first-app directory, run this command to create the new interface.
+I. ng generate interface housinglocation
+C. Run ng serve to build the app and serve it to http://localhost:4200.
+D. In a browser, open http://localhost:4200 to see your app.
+E. Confirm that the app builds without error. Correct any errors before you continue to the next step.
+ADD PROPERTIES TO THE NEW INTERFACE
+4. This step adds the properties to the interface that your app needs to represent a housing location.
+5. In the Terminal pane of your IDE, start the ng serve command, if it isn't already running,
+6 ... to build the app and serve it to http://localhost:4200.
+7. In the Edit pane of your IDE, open the src/app/housinglocation.ts file.
+8. In housinglocation.ts, replace the default content with the following code to make your new interface to match this example.
+A. Update src/app/housinglocation.ts to match this code:
+B. export interface HousingLocation {id: number;  name: string;  city: string;  state: string;  photo: string;  availableUnits: number;  wifi: boolean;  laundry: boolean;}
+9. Save your changes and confirm the app does not display any errors.
+A. Correct any errors before you continue to the next step.
+10. At this point, you've defined an interface that represents data about a housing location
+A. ... including an id, name, and location information.
+CREATE A TEST HOUSE FOR YOUR APP
+11. You have an interface, but you aren't using it yet.
+A. In this step, you create an instance of the interface and assign some sample data to it.
+B. You won't see this sample data appear in your app yet.
+C. There are a few more lessons to complete before that happens.
+12. In the Terminal pane of your IDE, run the ng serve command, if it isn't already running,
+A. ... to build the app and serve your app to http://localhost:4200.
+13. In the Edit pane of your IDE, open src/app/home/home.component.ts.
+A. In src/app/home/home.component.ts, add this import statement after the existing import statements
+B. ... so that HomeComponent can use the new interface: 
+C. Import HomeComponent in src/app/home/home.component.ts: import {HousingLocation} from '../housinglocation';
+14. In src/app/home/home.component.ts, replace the empty export class HomeComponent {} definition
+A. ... with this code to create a single instance of the new interface in the component.
+B. Add sample data to src/app/home/home.component.ts:
+export class HomeComponent {
+    readonly baseUrl = 'https://angular.dev/assets/images/tutorials/common';
+    housingLocation: HousingLocation = {
+        id: 9999,
+        name: 'Test Home',
+        city: 'Test city',
+        state: 'ST',
+        photo: `${this.baseUrl}/example-house.jpg`,
+        availableUnits: 99,
+        wifi: true,
+        laundry: false,
+    };
+} // end export class HomeComponent
+C. Confirm that your home.component.ts file matches like this example. src/app/home/home.component.ts:
+15. By adding the housingLocation property of type HousingLocation to the HomeComponent class,
+A. ... we're able to confirm that the data matches the description of the interface.
+B. If the data didn't satisfy the description of the interface, the IDE has enough information to give us helpful errors.
+16. Save your changes and confirm the app does not have any errors.
+A. Open the browser and confirm that your application still displays the message "housing-location works!"
+[browser frame of homes-app displaying logo, filter text input box and search button and the message 'housing-location works!']
+B. Correct any errors before you continue to the next step.
+17. For more information about the topics covered in this lesson, visit:
+A. ng generate interface
+B. ng generate

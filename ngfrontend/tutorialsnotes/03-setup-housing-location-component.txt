@@ -1,0 +1,63 @@
+
+CREATE THE APPLICATION'S HOUSINGLOCATION COMPONENT
+NOTE: REMEMBER TO ADD standalone: true TO THE @Component PORTION TO AVOID AN IMPORT ERROR
+
+THEORY/SUMMARY:
+Summary: In this lesson, you created a new component for your app and added it to the app's layout.
+This tutorial lesson demonstrates how to add the HousingLocation component to your Angular app.
+What you'll learn:
+Your app has a new component: HousingLocationComponent and it displays a message confirming that the component was added to your application.
+
+PRACTICE:
+1. Create the HousingLocationComponent: In this step, you create a new component for your app.
+A. In the Terminal pane of your IDE: In your project directory, navigate to the [first-app]/root directory.
+B. Run this command to create a new HousingLocationComponent: ng generate component housingLocation [--skip-import]
+C. Run this command to build and serve your app: ng serve
+I. Note: This step is only for your local environment!
+2. Open a browser and navigate to http://localhost:4200 to find the application.
+A. Confirm that the app builds without error.
+B. HELPFUL: It should render the same as it did in the previous lesson ...
+C. ... because even though you added a new component, you haven't included it in any of the app's templates, yet.
+3. Leave ng serve running as you complete the next steps.
+
+ADD THE NEW COMPONENT TO YOUR APP'S LAYOUT
+4. In this step, you add the new component, HousingLocationComponent ...
+5. ... to your app's HomeComponent, so that it displays in your app's layout.
+6. In the Edit pane of your IDE: Open home.component.ts in the editor.
+A. In home.component.ts, import HousingLocationComponent by adding this line to the file level imports.
+B. (Import HousingLocationComponent in src/app/home/home.component.ts)
+C. import {HousingLocationComponent} from '../housing-location/housing-location.component';
+7. Next update the imports property of the @Component metadata by adding HousingLocationComponent to the array.
+A. (Add HousingLocationComponent to imports array in src/app/home/home.component.ts)
+B. imports: [CommonModule, HousingLocationComponent], (also remember standalone: true)
+8. Now the component is ready for use in the template for the HomeComponent.
+A. Update the template property of the @Component metadata to include a reference to the <app-housing-location> tag.
+9. Add housing location to the component template in src/app/home/home.component.ts
+template: `
+<section>
+<form>
+<input type="text" placeholder="Filter by city" />
+<button class="primary" type="button">Search</button>
+</form>
+</section>
+<section class="results">
+<app-housing-location></app-housing-location>
+</section>
+`,
+10. Add the styles for the component
+A. In this step, you will copy over the pre-written styles for the HousingLocationComponent
+B. ... to your app so that the app renders properly.
+C. Open src/app/housing-location/housing-location.component.css, and paste the styles below into the file:
+D. NOTE: In the browser, these can go in src/app/housing-location/housing-location.component.ts in the styles array.
+E. Add CSS styles to housing location to the component in src/app/housing-location/housing-location.component.css:
+.listing {background: var(--accent-color);  border-radius: 30px;  padding-bottom: 30px;}
+.listing-heading {color: var(--primary-color);  padding: 10px 20px 0 20px;}
+.listing-photo {height: 250px;  width: 100%;  object-fit: cover;  border-radius: 30px 30px 0 0;}
+.listing-location {padding: 10px 20px 20px 20px;}
+.listing-location::before {content: url("/assets/location-pin.svg") / "";}
+section.listing a {padding-left: 20px;  text-decoration: none;  color: var(--primary-color);}
+section.listing a::after {content: "\203A";  margin-left: 5px;}
+11. Save your code, return to the browser and confirm that the app builds without error.
+A. You should find the message "housing-location works!" rendered to the screen.
+B. Correct any errors before you continue to the next step.
+[browser frame of homes-app displaying logo, filter text input box and search button and the message 'housing-location works!]

@@ -1,0 +1,79 @@
+/*
+NOTE: REMEMBER TO ADD standalone: true TO THE @Component PORTION TO AVOID AN IMPORT ERROR
+
+HELLO WORLD/SETUP
+THEORY/SUMMARY:
+Summary: In this lesson, you updated a default Angular app to display Hello world.
+In the process, you learned about the ng serve command to serve your app locally for testing.
+This first lesson serves as the starting point from which each lesson in this tutorial adds new features to build a complete Angular app.
+In this lesson, we'll update the application to display the famous text, "Hello World".
+What you'll learn:
+The updated app you have after this lesson confirms that you and your IDE are ready to begin creating an Angular app.
+Note: If you are working with the embedded editor, skip to step three.
+When working in the browser playground, you do not need to ng serve to run the app.
+Other commands like ng generate can be done in the console window to your right.
+
+PRACTICE:
+.5. If not already installed, install angular CLI: npm install -g @angular/cli; check version ng version
+1. Download the default app
+A. Start by clicking the "Download" icon in the top right pan of the code editor.
+B. This will download a .zip file containing the source code for this tutorial.
+C. Open this in your local Terminal and IDE then move on to testing the default app.
+D. At any step in the tutorial, you can click this icon to download the step's source code and start from there.
+2. Test the default app
+A. In this step, after you download the default starting app, you build the default Angular app.
+B. This confirms that your development environment has what you need to continue the tutorial.
+3. In the Terminal pane of your IDE:
+A. In your project directory, navigate to the [first-app]/root directory.
+B. Run this command to install the dependencies needed to run the app: npm install
+C. Run this command to build and serve the default app: ng serve
+D. The app should build without errors.
+4. In a web browser on your development computer, open http://localhost:4200.
+A. Confirm that the default web site appears in the browser.
+B. You can leave ng serve running as you complete the next steps.
+5. Review the files in the project
+A. In this step, you get to know the files that make up a default Angular app.
+B. In the Explorer pane of your IDE:
+C. In your project directory, navigate to the [first-app]/root directory.
+D. Open the src directory to see these files.
+E. In the file explorer, find the Angular app files (/src).
+I. index.html is the app's top level HTML template.
+II. styles.css is the app's top level style sheet.
+III. main.ts is where the app starts running.
+IV. favicon.ico is the app's icon, just as you would find in any web site.
+F. In the file explorer, find the Angular app's component files (/app).
+I. app.component.ts is the source file that describes the app-root component.
+II. This is the top-level Angular component in the app.
+III. A component is the basic building block of an Angular application.
+IV. The component description includes the component's code, HTML template, and styles, which can be described in this file, or in separate files.
+V. In this app, the styles are in a separate file while the component's code and HTML template are in this file.
+VI. app.component.css is the style sheet for this component.
+VII. New components are added to this directory.
+G. In the file explorer, find the image directory (/assets) that contains images used by the app.
+H. In the file explorer, find the files and directories that an Angular app needs to build and run, but they are not files that you normally interact with.
+I. .angular has files required to build the Angular app.
+II. .e2e has files used to test the app.
+III. .node_modules has the node.js packages that the app uses.
+IV. angular.json describes the Angular app to the app building tools.
+V. package.json is used by npm (the node package manager) to run the finished app.
+VI. tsconfig.* are the files that describe the app's configuration to the TypeScript compiler.
+
+CREATE HELLO WORLD
+6. After you have reviewed the files that make up an Angular app project, continue to the next step: 
+A. In this step, you update the Angular project files to change the displayed content.
+B. In your IDE: Open first-app/src/index.html.
+I. Note: This step and the next are only for your local environment!
+C. In index.html, replace the <title> element with this code to update the title of the app.
+I. Replace in src/index.html: <title>Homes</title>
+II. Then, save the changes you just made to index.html.
+D. Next, open first-app/src/app/app.component.ts.
+I. In app.component.ts, in the @Component definition, replace the template line with this code to change the text in the app component.
+II. Replace in src/app/app.component.ts: template: `<h1>Hello world!</h1>`,
+III. In app.component.ts, in the AppComponent class definition, replace the title line with this code to change the component title.
+IV. Replace in src/app/app.component.ts: export class AppComponent {title = 'homes';}
+V. Then, save the changes you made to app.component.ts.
+E. If you stopped the ng serve command from step 1, in the Terminal window of your IDE, run ng serve again.
+I. Open your browser and navigate to localhost:4200 and confirm that the app ...
+II. ... builds without error and displays Hello world in the title and body of your app:
+III. browser frame of page displaying the text 'Hello World'
+*/
